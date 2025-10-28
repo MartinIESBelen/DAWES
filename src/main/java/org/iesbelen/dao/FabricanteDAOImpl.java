@@ -198,4 +198,46 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
 		
 	}
 
+    /**
+     * Muestra cuantos productos tiene el fabricante
+     */
+    public List<FabricanteDTO> getCantidadDeProductos() {
+        List<FabricanteDTO> list = new ArrayList<>();
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = connectDB();
+
+            ps = conn.prepareStatement(
+                    "SELECT f.idFabricante, f.nombre, COUNT(p.idProducto) AS numProductos " +
+                            "FROM fabricantes f LEFT JOIN productos p ON f.idFabricante = p.idFabricante " +
+                            "GROUP BY f.idFabricante, f.nombre ORDER BY f.idFabricante");
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                FabricanteDTO dto = new FabricanteDTO(
+                        rs.getInt("idFabricante"),
+                        rs.getString("nombre"),
+                        rs.getInt("numProductos")
+                );
+                list.add(dto);
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
 }

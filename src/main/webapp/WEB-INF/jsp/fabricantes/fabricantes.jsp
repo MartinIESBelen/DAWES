@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@page import="org.iesbelen.model.Fabricante"%>
 <%@page import="java.util.List"%>
-
+<%@ page import="org.iesbelen.dao.FabricanteDTO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +17,7 @@
 	</style>
 </head>
 <body>
-<body>
+
 
 	<div id="contenedora" style="float:none; margin: 0 auto;width: 900px;" >
 		<div class="clearfix">
@@ -38,24 +38,25 @@
 			<hr/>
 		</div>
 		<div class="clearfix">
-			<div style="float: left;width: 33%">Código</div>
-			<div style="float: left;width: 33%">Nombre</div>
+			<div style="float: left;width: 25%">Código</div>
+			<div style="float: left;width: 25%">Nombre</div>
+            <div style="float: left;width: 25%">Numero Productos</div>
 			<div style="float: none;width: auto;overflow: hidden;">Acción</div>
 		</div>
 		<div class="clearfix">
 			<hr/>
 		</div>
-	<% 
-        if (request.getAttribute("listaFabricantes") != null) {
-            List<Fabricante> listaFabricante = (List<Fabricante>)request.getAttribute("listaFabricantes");
-            
-            for (Fabricante fabricante : listaFabricante) {
+	<%
+            List<FabricanteDTO> lista = (List<FabricanteDTO>)request.getAttribute("listaFabricantes");
+            for (FabricanteDTO fabricante : lista) {
     %>
 
 		<div style="margin-top: 6px;" class="clearfix">
-			<div style="float: left;width: 33%"><%= fabricante.getIdFabricante()%></div>
-			<div style="float: left;width: 33%"><%= fabricante.getNombre()%></div>
+			<div style="float: left;width: 25%"><%= fabricante.getIdFabricante()%></div>
+			<div style="float: left;width: 25%"><%= fabricante.getNombre()%></div>
+            <div style="float: left;width: 25%"><%= fabricante.getNumProductos()%></div>
 			<div style="float: none;width: auto;overflow: hidden;">
+
 				<form action="${pageContext.request.contextPath}/tienda/fabricantes/<%= fabricante.getIdFabricante()%>" style="display: inline;">
     				<input type="submit" value="Ver Detalle" />
 				</form>
@@ -67,16 +68,13 @@
 					<input type="hidden" name="codigo" value="<%= fabricante.getIdFabricante()%>"/>
     				<input type="submit" value="Eliminar" />
 				</form>
+
 			</div>
 		</div>
 
 	<% 
             }
-        } else { 
     %>
-		No hay registros de fabricante
-	<% } %>
 	</div>
-</body>
 </body>
 </html>

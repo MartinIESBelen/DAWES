@@ -1,6 +1,7 @@
 package org.iesbelen.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.iesbelen.dao.FabricanteDAO;
 import org.iesbelen.dao.FabricanteDAOImpl;
+import org.iesbelen.dao.FabricanteDTO;
 import org.iesbelen.model.Fabricante;
 
 @WebServlet(name = "fabricantesServlet", value = "/tienda/fabricantes/*")
@@ -40,8 +42,8 @@ public class FabricantesServlet extends HttpServlet {
 			//GET 
 			//	/fabricantes/
 			//	/fabricantes
-			
-			request.setAttribute("listaFabricantes", fabDAO.getAll());		
+			List<FabricanteDTO> lista = fabDAO.getCantidadDeProductos();
+			request.setAttribute("listaFabricantes", lista);
 			dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/fabricantes/fabricantes.jsp");
 			        		       
 		} else {

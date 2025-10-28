@@ -12,5 +12,5 @@ public interface FabricanteDAO {
 	public Optional<Fabricante>  find(int id);
 	public void update(Fabricante fabricante);
 	public void delete(int id);
-
+    public List<FabricanteDTO> getCantidadDeProductos();
 }
