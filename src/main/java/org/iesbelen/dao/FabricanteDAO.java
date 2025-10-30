@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.iesbelen.model.Fabricante;
+import org.iesbelen.model.FabricanteDTO;
 
 public interface FabricanteDAO {
 		
@@ -12,5 +13,7 @@ public interface FabricanteDAO {
 	public Optional<Fabricante>  find(int id);
 	public void update(Fabricante fabricante);
 	public void delete(int id);
-    public List<FabricanteDTO> getCantidadDeProductos();
+    //public List<FabricanteDTO> getCantidadDeProductos();
+    //Ampliación CRUD:
+    public Optional<Integer> getCountProductos(int id);
 }

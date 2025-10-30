@@ -1,7 +1,9 @@
 package org.iesbelen.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -12,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.iesbelen.dao.FabricanteDAO;
 import org.iesbelen.dao.FabricanteDAOImpl;
-import org.iesbelen.dao.FabricanteDTO;
+import org.iesbelen.model.FabricanteDTO;
 import org.iesbelen.model.Fabricante;
 
 @WebServlet(name = "fabricantesServlet", value = "/tienda/fabricantes/*")
@@ -42,8 +44,19 @@ public class FabricantesServlet extends HttpServlet {
 			//GET 
 			//	/fabricantes/
 			//	/fabricantes
-			List<FabricanteDTO> lista = fabDAO.getCantidadDeProductos();
-			request.setAttribute("listaFabricantes", lista);
+			List<Fabricante> listaFabricantes = fabDAO.getAll();
+            List<FabricanteDTO> listaFabricantesDTO = new ArrayList<>();
+            Optional<Integer> cantidad;
+
+            for (Fabricante fabricante : listaFabricantes) {
+                cantidad = fabDAO.getCountProductos(fabricante.getIdFabricante());
+                FabricanteDTO fabricanteDTO = new FabricanteDTO(fabricante.getIdFabricante(),
+                        fabricante.getNombre(), cantidad.orElse(0));
+                listaFabricantesDTO.add(fabricanteDTO);
+            }
+
+
+			request.setAttribute("listaFabricantes", listaFabricantesDTO);
 			dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/fabricantes/fabricantes.jsp");
 			        		       
 		} else {
@@ -68,6 +81,33 @@ public class FabricantesServlet extends HttpServlet {
 				FabricanteDAO fabDAO = new FabricanteDAOImpl();
 				// GET
 				// /fabricantes/{id}
+/*
+                try {
+                    Optional<Fabricante> optFab = fabDAO.find(Integer.parseInt(pathParts[1]));
+
+                    if (optFab.isPresent()) {
+                        // Obtenemos el número de productos del fabricante
+                        int numProductos = fabDAO.getCountProductos(optFab.get().getIdFabricante()).orElse(0);
+
+                        // Creamos el DTO
+                        Fabricante fab = optFab.get();
+                        FabricanteDTO fabDTO = new FabricanteDTO(fab.getIdFabricante(), fab.getNombre(), numProductos);
+
+                        // Guardamos el DTO en el atributo, envuelto en Optional
+                        request.setAttribute("fabricante", Optional.of(fabDTO));
+                        dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/fabricantes/detalle-fabricante.jsp");
+                    } else {
+                        response.sendRedirect(request.getContextPath() + "/tienda/fabricantes");
+                        return;
+                    }
+
+                } catch (NumberFormatException nfe) {
+                    nfe.printStackTrace();
+                    dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/fabricantes/fabricantes.jsp");
+                }
+*/
+
+                //* LO QUE TENÍA EL PROFESOR
 				try {
 					request.setAttribute("fabricante",fabDAO.find(Integer.parseInt(pathParts[1])));
 					dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/fabricantes/detalle-fabricante.jsp");
@@ -76,6 +116,8 @@ public class FabricantesServlet extends HttpServlet {
 					nfe.printStackTrace();
 					dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/fabricantes/fabricantes.jsp");
 				}
+				//*/
+
 			} else if (pathParts.length == 3 && "editar".equals(pathParts[1]) ) {
 				FabricanteDAO fabDAO = new FabricanteDAOImpl();
 				

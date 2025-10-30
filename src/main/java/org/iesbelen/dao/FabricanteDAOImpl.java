@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.iesbelen.model.Fabricante;
+import org.iesbelen.model.FabricanteDTO;
 
 public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
 
@@ -197,10 +198,10 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
         }
 		
 	}
+/**
 
-    /**
      * Muestra cuantos productos tiene el fabricante
-     */
+
     public List<FabricanteDTO> getCantidadDeProductos() {
         List<FabricanteDTO> list = new ArrayList<>();
 
@@ -239,5 +240,41 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
             }
         }
         return list;
+    }
+*/
+    @Override
+    public Optional<Integer> getCountProductos(int id) {
+        Optional<Integer> cantidad = Optional.empty();
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = connectDB();
+            ps = conn.prepareStatement(
+                    "SELECT COUNT(p.idProducto) AS numProductos " +
+                            "FROM fabricantes f LEFT JOIN productos p ON f.idFabricante = p.idFabricante " +
+                            "WHERE f.idFabricante = ?");
+            int idx = 1;
+            ps.setInt(idx, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                cantidad = Optional.of(rs.getInt("numProductos"));
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return cantidad;
     }
 }
