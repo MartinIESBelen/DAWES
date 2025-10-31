@@ -81,7 +81,7 @@ public class FabricantesServlet extends HttpServlet {
 				FabricanteDAO fabDAO = new FabricanteDAOImpl();
 				// GET
 				// /fabricantes/{id}
-/*
+
                 try {
                     Optional<Fabricante> optFab = fabDAO.find(Integer.parseInt(pathParts[1]));
 
@@ -105,9 +105,9 @@ public class FabricantesServlet extends HttpServlet {
                     nfe.printStackTrace();
                     dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/fabricantes/fabricantes.jsp");
                 }
-*/
 
-                //* LO QUE TENÍA EL PROFESOR
+
+                /* LO QUE TENÍA EL PROFESOR
 				try {
 					request.setAttribute("fabricante",fabDAO.find(Integer.parseInt(pathParts[1])));
 					dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/fabricantes/detalle-fabricante.jsp");
