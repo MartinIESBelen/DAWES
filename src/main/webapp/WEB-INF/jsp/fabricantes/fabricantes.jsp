@@ -70,11 +70,27 @@
 				</form>
 
 			</div>
-		</div>
 
+		</div>
 	<% 
             }
     %>
+        <div>
+            <br>
+            <form action="${pageContext.request.contextPath}/tienda/fabricantes" method="get" style="display: inline;">
+                <label for="ordenarPor">Ordenar por:</label>
+                <select name="ordenarPor">
+                    <option value="nombre">nombre</option>
+                    <option value="idFabricante">id</option>
+                </select>
+                <label for="tipoOrdenacion">Modo de ordenar:</label>
+                <select name="tipoOrdenacion">
+                    <option value="asc">ascendente</option>
+                    <option value="desc">descendente</option>
+                </select>
+                <input type="submit" value="ordenar">
+            </form>
+        </div>
 	</div>
 </body>
 </html>

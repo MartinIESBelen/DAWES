@@ -2,6 +2,7 @@ package org.iesbelen.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,27 +38,39 @@ public class FabricantesServlet extends HttpServlet {
 		RequestDispatcher dispatcher;
 				
 		String pathInfo = request.getPathInfo(); //
-			
-		if (pathInfo == null || "/".equals(pathInfo)) {
-			FabricanteDAO fabDAO = new FabricanteDAOImpl();
-			
-			//GET 
-			//	/fabricantes/
-			//	/fabricantes
-			List<Fabricante> listaFabricantes = fabDAO.getAll();
-            List<FabricanteDTO> listaFabricantesDTO = new ArrayList<>();
-            Optional<Integer> cantidad;
 
-            for (Fabricante fabricante : listaFabricantes) {
-                cantidad = fabDAO.getCountProductos(fabricante.getIdFabricante());
-                FabricanteDTO fabricanteDTO = new FabricanteDTO(fabricante.getIdFabricante(),
-                        fabricante.getNombre(), cantidad.orElse(0));
-                listaFabricantesDTO.add(fabricanteDTO);
+		if (pathInfo == null || "/".equals(pathInfo)) {
+            FabricanteDAO fabDAO = new FabricanteDAOImpl();
+
+            String ordenarPor =  request.getParameter("ordenarPor");
+            String tipoOrdenacion = request.getParameter("tipoOrdenacion");
+
+            List<Fabricante> fabricantes = fabDAO.getAll();
+
+
+            Comparator<FabricanteDTO> comparator = Comparator.comparing(Fabricante::getNombre);
+            if(ordenarPor != null && tipoOrdenacion != null){
+
+                if("idFabricante".equals(ordenarPor)){
+                    comparator = Comparator.comparing(FabricanteDTO::getIdFabricante);
+                }
+                if("desc".equalsIgnoreCase(tipoOrdenacion)){
+                    comparator = comparator.reversed();
+                }
             }
 
+            List<FabricanteDTO> fabricantesDTO = fabricantes.stream()
+                    .map(f -> new FabricanteDTO(
+                            f.getIdFabricante(),
+                            f.getNombre(),
+                            fabDAO.getCountProductos(f.getIdFabricante()).orElse(0)
+                    )).sorted(comparator).toList();
 
-			request.setAttribute("listaFabricantes", listaFabricantesDTO);
-			dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/fabricantes/fabricantes.jsp");
+
+            request.setAttribute("listaFabricantes", fabricantesDTO);
+            dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/fabricantes/fabricantes.jsp");
+
+
 			        		       
 		} else {
 			// GET
@@ -94,7 +107,7 @@ public class FabricantesServlet extends HttpServlet {
                         FabricanteDTO fabDTO = new FabricanteDTO(fab.getIdFabricante(), fab.getNombre(), numProductos);
 
                         // Guardamos el DTO en el atributo, envuelto en Optional
-                        request.setAttribute("fabricante", Optional.of(fabDTO));
+                        request.setAttribute("fabricante", fabDTO);
                         dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/fabricantes/detalle-fabricante.jsp");
                     } else {
                         response.sendRedirect(request.getContextPath() + "/tienda/fabricantes");

@@ -41,8 +41,8 @@
 			<hr/>
 		</div>
 		
-		<% 	Optional<FabricanteDTO> optFab = (Optional<FabricanteDTO>)request.getAttribute("fabricante");
-			if (optFab.isPresent()) {
+		<% 	FabricanteDTO optFab = (FabricanteDTO)request.getAttribute("fabricante");
+			if (optFab != null) {
 		%>
 		
 		<div style="margin-top: 6px;" class="clearfix">
@@ -50,7 +50,7 @@
 				<label>Código</label>
 			</div>
 			<div style="float: none;width: auto;overflow: hidden;">
-				<input value="<%= optFab.get().getIdFabricante() %>" readonly="readonly"/>
+				<input value="<%= optFab.getIdFabricante() %>" readonly="readonly"/>
 			</div> 
 		</div>
 		<div style="margin-top: 6px;" class="clearfix">
@@ -58,7 +58,7 @@
 				<label>Nombre</label>
 			</div>
 			<div style="float: none;width: auto;overflow: hidden;">
-				<input value="<%= optFab.get().getNombre() %>" readonly="readonly"/>
+				<input value="<%= optFab.getNombre() %>" readonly="readonly"/>
 			</div> 
 		</div>
     <div style="margin-top: 6px;" class="clearfix">
@@ -66,7 +66,7 @@
             <label>Cantidad de Productos</label>
         </div>
         <div style="float: none;width: auto;overflow: hidden;">
-            <input value="<%= optFab.get().getNumProductos() %>" readonly="readonly"/>
+            <input value="<%= optFab.getNumProductos() %>" readonly="readonly"/>
         </div>
     </div>
 		
