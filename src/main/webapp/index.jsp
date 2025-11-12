@@ -12,11 +12,19 @@
     </style>
 </head>
 <body>
-
-    <div class="d-grid gap-2" id="contenedor">
+<%@ include file="/WEB-INF/jsp/fragmentos/header.jspf" %>
+<%@ include file="/WEB-INF/jsp/fragmentos/nav.jspf" %>
+<!-- Body section -->
+<main class = "body_sec">
+    <section id="Content">
+        <h3>Content section</h3>
+    </section>
+</main>
+<%@ include file ="/WEB-INF/jsp/fragmentos/footer.jspf"%>
+    <%--<div class="d-grid gap-2" id="contenedor">
         <a class="btn btn-primary btn-lg" href="<%=application.getContextPath()%>/tienda/fabricantes">FABRICANTES</a>
         <a class="btn btn-success btn-lg" href="<%=application.getContextPath()%>/tienda/productos">PRODUCTOS</a>
-    </div>
+    </div>--%>
 
     <%@include file="boostrap.jspf"%>
 </body>

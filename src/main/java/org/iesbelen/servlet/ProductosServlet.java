@@ -35,17 +35,26 @@ public class ProductosServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		RequestDispatcher dispatcher;
+
+        ProductoDAO proDAO = new ProductoDAOImpl();
+        String filtro = request.getParameter("filtrar-por-nombre");
 				
 		String pathInfo = request.getPathInfo(); //
-			
+			List<Producto> productos;
 		if (pathInfo == null || "/".equals(pathInfo)) {
-			ProductoDAO fabDAO = new ProductoDAOImpl();
+
+            if(filtro!=null && !filtro.trim().isEmpty()){
+                 productos = proDAO.filtrarPorNombre(filtro.trim());
+            }else{
+                productos = proDAO.getAll();
+            }
+
 			
 			//GET 
 			//	/productos/
 			//	/productos
 			
-			request.setAttribute("listaProductos", fabDAO.getAll());
+			request.setAttribute("listaProductos", productos);
 			dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/productos/productos.jsp");
 			        		       
 		} else {

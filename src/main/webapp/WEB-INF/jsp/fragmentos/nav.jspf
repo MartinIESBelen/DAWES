@@ -1,0 +1,9 @@
+<!-- Menu Navigation Bar -->
+<nav class="menu">
+    <a href="<%=application.getContextPath()%>/index.jsp">HOME</a>
+    <a href="<%=application.getContextPath()%>/tienda/fabricantes">Frabricantes</a>
+    <a href="<%=application.getContextPath()%>/tienda/productos">Producto</a>
+    <div class="menu-log">
+        <a href="#login">LOGIN</a>
+    </div>
+</nav>

@@ -144,6 +144,7 @@ public class ProductoDAOImpl extends AbstractDAOImpl implements ProductoDAO{
 		PreparedStatement ps = null;
         ResultSet rs = null;
 
+
         try {
         	conn = connectDB();
         	
@@ -199,4 +200,38 @@ public class ProductoDAOImpl extends AbstractDAOImpl implements ProductoDAO{
         }
 		
 	}
+
+    @Override
+    public List<Producto> filtrarPorNombre(String nombre) {
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<Producto> listProd = new ArrayList<>();
+
+        try{
+            conn = connectDB();
+            ps = conn.prepareStatement("SELECT * FROM productos WHERE nombre LIKE ?");
+
+            ps.setString(1, "%"+nombre+"%");
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Producto prod = new Producto();
+                int idx = 1;
+                prod.setIdProducto(rs.getInt(idx++));
+                prod.setNombre(rs.getString(idx++));
+                prod.setPrecio(rs.getDouble(idx++));
+                prod.setCodigo_fabricante(rs.getInt(idx++));
+                listProd.add(prod);
+            }
+        }catch(SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        } finally {
+            closeDb(conn, ps, rs);
+        }
+        return listProd;
+    }
 }

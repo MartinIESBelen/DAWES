@@ -3,7 +3,9 @@
 <%@page import="org.iesbelen.model.Fabricante"%>
 <%@page import="java.util.List"%>
 <%@ page import="org.iesbelen.model.Producto" %>
-
+<%@ include file="/WEB-INF/jsp/fragmentos/header.jspf" %>
+<%@ include file="/WEB-INF/jsp/fragmentos/nav.jspf" %>
+<%@ include file="/WEB-INF/jsp/fragmentos/footer.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,8 +75,17 @@
 				</form>
 			</div>
 		</div>
-	<% 
+	<%
             }
+            %>
+        <form action="${pageContext.request.contextPath}/tienda/productos/" method="get" style="display: inline;">
+            <div>
+                <label for="filtrarPorNombre">Nombre del producto</label>
+                <input type="text" name="filtrar-por-nombre" id="filtrarPorNombre">
+                <input type="submit" value="buscar">
+            </div>
+        </form>
+        <%
         } else { 
     %>
 		No hay registros de producto

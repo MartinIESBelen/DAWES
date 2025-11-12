@@ -2,6 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@page import="org.iesbelen.model.Fabricante"%>
 <%@page import="java.util.Optional"%>
+<%@ include file="/WEB-INF/jsp/fragmentos/header.jspf" %>
+<%@ include file="/WEB-INF/jsp/fragmentos/nav.jspf" %>
+<%@ include file="/WEB-INF/jsp/fragmentos/footer.jspf" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +21,7 @@
 </style>
 </head>
 <body>
+
 
 <div id="contenedora" style="float:none; margin: 0 auto;width: 900px;" >
 	<form action="${pageContext.request.contextPath}/tienda/fabricantes/crear/" method="post">

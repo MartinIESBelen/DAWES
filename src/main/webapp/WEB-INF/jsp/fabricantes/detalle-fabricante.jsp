@@ -4,6 +4,9 @@
 <%@page import="java.util.Optional"%>
 <%@ page import="org.iesbelen.model.FabricanteDTO" %>
 <%@ page import="java.util.List" %>
+<%@ include file="/WEB-INF/jsp/fragmentos/header.jspf" %>
+<%@ include file="/WEB-INF/jsp/fragmentos/nav.jspf" %>
+<%@ include file="/WEB-INF/jsp/fragmentos/footer.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>

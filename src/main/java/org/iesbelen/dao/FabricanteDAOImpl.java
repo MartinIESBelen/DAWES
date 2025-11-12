@@ -134,7 +134,53 @@ public class FabricanteDAOImpl extends AbstractDAOImpl implements FabricanteDAO{
         return Optional.empty();
         
 	}
-	/**
+
+    @Override
+    public List<FabricanteDTO> getFabricantesOrdenado(String criterio, String orden) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        List<FabricanteDTO> listFab = new ArrayList<>();
+        try{
+
+            conn = connectDB();
+
+            if(!"asc".equals(orden) || !"desc".equals(orden)) return null;
+
+            if(!"nombre".equals(criterio) || !"idFabricante".equals(criterio)) return null;
+
+            if(criterio==null || orden==null) return null;
+
+            String sql = "SELECT * FROM fabricantes ORDER BY " + criterio  + orden;
+
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                FabricanteDTO fabDTO = new FabricanteDTO(
+                        rs.getInt("idFabricante"),
+                        rs.getString("nombre"),
+                        rs.getInt("numProductos")
+                );
+                int idx = 1;
+                fabDTO.setIdFabricante(rs.getInt(idx++));
+                fabDTO.setNombre(rs.getString(idx));
+                listFab.add(fabDTO);
+            }
+
+        }catch(ClassNotFoundException e){
+            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeDb(conn, st, rs);
+        }
+
+        return listFab;
+    }
+
+    /**
 	 * Actualiza fabricante con campos del bean fabricante según ID del mismo.
 	 */
 	@Override
