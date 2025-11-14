@@ -10,4 +10,5 @@ public interface UsuarioDAO {
     public List<Usuario> getAll();
     public Optional<Usuario> find(int id);
     public void update(Usuario usuario);
+    public void delete(int id);
 }

@@ -3,6 +3,7 @@
     <a href="<%=application.getContextPath()%>/index.jsp">HOME</a>
     <a href="<%=application.getContextPath()%>/tienda/fabricantes">Frabricantes</a>
     <a href="<%=application.getContextPath()%>/tienda/productos">Producto</a>
+    <a href="<%=application.getContextPath()%>/tienda/usuarios">Usuario</a>
     <div class="menu-log">
         <a href="#login">LOGIN</a>
     </div>
